@@ -53,7 +53,12 @@ app.use("/api/deal", dealRoutes);
 app.use("/api/group", groupRoutes);
 app.use("/api/groupMember", groupMemberRoutes);
 app.use("/api/user", userRoutes);
-
+app.get('/api/student', (req, res) => {
+  res.json({
+    name: "Joseph Kalayathankal Saji",
+    studentId: "225053039"
+  });
+});
 // Serve frontend
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));

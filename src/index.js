@@ -79,21 +79,26 @@ app.use("/api/deal", dealRoutes);
 app.use("/api/group", groupRoutes);
 app.use("/api/groupMember", groupMemberRoutes);
 app.use("/api/user", userRoutes);
-
+app.get('/api/student', (req, res) => {
+  res.json({
+    name: "Joseph Kalayathankal Saji",
+    studentId: "225053039"
+  });
+});
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
 
-    // Start scheduled cron jobs
-    require('./cronJobs/cronScheduler');
+    // // Start scheduled cron jobs
+    // require('./cronJobs/cronScheduler');
 
     // Manually trigger fetchDealsJob to test it immediately
-    const fetchDealsJob = require('./cronJobs/fetchDealsJob');
+    // const fetchDealsJob = require('./cronJobs/fetchDealsJob');
 
-    (async () => {
-      console.log('👟 Manually triggering fetchDealsJob to test...');
-      await fetchDealsJob();
-    })();
+    // (async () => {
+    //   console.log('👟 Manually triggering fetchDealsJob to test...');
+    //   await fetchDealsJob();
+    // })();
   })
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -121,6 +126,6 @@ io.on("connection", (socket) => {
 
 // Start the server using `server` (not app)
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+server.listen(PORT, "0.0.0.0",  () => {
   console.log(`Server running on port ${PORT}`);
 });

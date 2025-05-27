@@ -3,6 +3,39 @@ This repository contains the code written for Split Deal, a deal sharing platfor
 
 A RESTful API for group buying deals with JWT authentication
 
+## Docker Deployment  
+
+### Prerequisites  
+- Docker installed ([Download Docker](https://www.docker.com/products/docker-desktop))  
+- `.env` file with MongoDB credentials (required else mongodb won't connect)
+
+### Steps  
+1. **Build the Docker image**:  
+   ```bash  
+   docker build -t sit725-group-project .
+2. **Run the container**
+   ```bash
+   docker run -p 3000:3000 -d sit725-group-project
+   
+3. Access the application <br>
+   Main app: http://localhost:3000 <br>
+   Student API: http://localhost:3000/api/student <br>
+
+4. **Expected API Output**
+    ```bash
+    {  
+    "name": "Your Name",  
+    "studentId": "YourStudentID"  
+    }
+5. Notes
+  Ensure the .env file is present for database connectivity. <br>
+  Use docker logs <container_id> to debug startup issues. <br>
+  Use docker ps to check which all containers are working 
+
+
+
+
+
 Features
 ✅ JWT Authentication (/register, /login)
 ✅ Group Management (Create groups, update status)

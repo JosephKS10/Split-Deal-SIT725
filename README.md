@@ -7,35 +7,44 @@ A RESTful API for group buying deals with JWT authentication
 
 ### Prerequisites  
 - Docker installed ([Download Docker](https://www.docker.com/products/docker-desktop))  
-- `.env` file with MongoDB credentials (required else mongodb won't connect)
+- Docker Compose (included with Docker Desktop)  
 
-### Steps  
-1. **Build the Docker image**:  
+### Quick Start    
+1. **Start all services (app + MongoDB)**:  
    ```bash  
-   docker build -t sit725-group-project .
-2. **Run the container**
-   ```bash
-   docker run -p 3000:3000 -d sit725-group-project
+   docker-compose up -d
+
+### Detailed Setup
+1. **Application & Database**:
+   # Build and run with MongoDB
+   ```bash  
+   docker-compose up -d app
    
-3. Access the application <br>
+4. Access the application <br>
    Main app: http://localhost:3000 <br>
    Student API: http://localhost:3000/api/student <br>
 
-4. **Expected API Output**
+5. **Expected API Output**
     ```bash
     {  
     "name": "Your Name",  
     "studentId": "YourStudentID"  
     }
-5. Notes
+6. Notes
   Ensure the .env file is present for database connectivity. <br>
   Use docker logs <container_id> to debug startup issues. <br>
-  Use docker ps to check which all containers are working 
+  Use docker ps to check which all containers are working
 
+1. **Application & Database**:
+   # Run unit tests
+   ```bash  
+   docker-compose run test-unit
 
-
-
-
+Feautes of docker -
+Local MongoDB Container - No cloud dependency
+Isolated Testing - Dedicated containers for unit/e2e tests
+Auto-Cleaning - Test database resets between runs
+Health Checks - Ensures DB readiness before app starts
 Features
 ✅ JWT Authentication (/register, /login)
 ✅ Group Management (Create groups, update status)

@@ -1,20 +1,19 @@
-# Use official Node.js image
 FROM node:18-alpine
 
-# Create app directory
 WORKDIR /app
 
-# Copy package files
+# Install MongoDB shell for healthchecks
+RUN apk add --no-cache mongodb-tools
+
 COPY package*.json ./
 
-# Install dependencies
 RUN npm install
 
-# Bundle app source
+# Install test dependencies globally
+RUN npm install -g mocha nyc cross-env
+
 COPY . .
 
-# Expose the port your app runs on
 EXPOSE 3000
 
-# Command to run your app
 CMD ["npm", "start"]

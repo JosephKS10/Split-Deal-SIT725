@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/project-splitdeal
+      - PORT=3000
+      - JWT_SECRET=$$#$$
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=465
+      - SMTP_USER=gauravspamm@gmail.com
+      - SMTP_PASS=hfvgmywrhapyqovw
+      - SMTP_FROM="Gaurav Myana <gauravspamm@gmail.com>"
+      - FRONTEND_URL=https://yourapp.com
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=project-splitdeal
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017 --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  test-unit:
+    build: .
+    command: sh -c "npm run test-backend:unit"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/project-splitdeal-test
+      - NODE_ENV=backend-test
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  test-e2e:
+    build: .
+    command: sh -c "npm run test-backend:e2e"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/project-splitdeal-test
+      - NODE_ENV=backend-test
+    depends_on:
+      - app
+      - mongodb
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  app-network:
+    driver: bridge
